@@ -45,7 +45,7 @@ public class Decoder {
 
 		List<String> code = new ArrayList<>();
 
-		for (int i = 1; i <= alphabetList.size(); i++) {
+		for (int i = 0; i < alphabetList.size(); i++) {
 			code.add(String.valueOf(i));
 		}
 
@@ -80,26 +80,26 @@ public class Decoder {
 
 		List<String> alphabetList = new ArrayList<>(messageList);
 
+		List<Integer> indexes = new ArrayList<>();
+		for (int i = 0; i < messageList.size(); i++) {
+			indexes.add(i);
+		}
+
 		Collections.sort(alphabetList);
+		System.out.println(alphabetList);
 
 		for (int i = 0; i < messageList.size(); i++) {
 			String letter = alphabetList.get(index);
 			decodedMessage.append(letter);
-			repeat = 0;
-
-			while ((index > 0) && (alphabetList.get(index - 1).equals(letter))) {
-				repeat++;
-				index--;
+			int j = 0;
+			for (Integer ind : indexes) {
+				if (messageList.get(ind).equals(letter)) {
+					j = ind;
+					indexes.remove(ind);
+					break;
+				}
 			}
-
-			index = repeat;
-			repeat = 0;
-
-			while (!messageList.get(repeat).equals(letter)) {
-				repeat++;
-			}
-
-			index = repeat + index;
+			index = j;
 		}
 
 		return decodedMessage.toString();
